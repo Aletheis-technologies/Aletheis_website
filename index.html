@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aletheis Technologies</title>
+<meta name="description" content="Aletheis Technologies builds lab equipment for communication engineering, including the AL-WCT-1002 Wireless Communication Trainer.">
+<link rel="icon" href="images/app-icon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,500;112,700;125,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+[hidden]{display:none!important}
+/* Layout: company site in tabbed views (Home / Product / How it works / About / Quote). Brand navy + signal cyan from the logo; gold product photos sit on cool studio grey. */
+:root{
+  --bg:#eef4fd; --surface:#ffffff; --studio:#e9edf2; --ink:#0c1f40; --muted:#46597a; --line:#cfdcf0;
+  --navy:#1f3d6b; --blue:#1652b8; --cyan:#0b8fc0; --mint:#5be7c4; --signal:#2fd3f2;
+  --btn:#1652b8; --btn-ink:#ffffff; --btn-hover:#0e3f94; --chip:#dce8fb; --tab-on:#1652b8; --tab-on-ink:#ffffff;
+  --deep:#103f96; --deep-2:#0e3f94; --deep-line:#3a66b8; --deep-ink:#ffffff; --deep-muted:#cfe0fb;
+  --hero-a:#d6e6ff; --top:#ffffff;
+  --f-display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --r:12px; --mark-filter:none; --wm-filter:none; color-scheme:light;
+}
+/* light (blue) is the default; dark only when the viewer picks it */
+:root[data-theme="dark"]{
+  --bg:#0a1220; --surface:#111c2e; --studio:#e6eaef; --ink:#e8eef7; --muted:#9db0c9; --line:#22334d;
+  --navy:#9cc0f0; --blue:#5b9cff; --cyan:#2fd3f2; --mint:#5be7c4; --signal:#2fd3f2;
+  --btn:#2fd3f2; --btn-ink:#06121f; --btn-hover:#5be7c4; --chip:#16263f; --tab-on:#111c2e; --tab-on-ink:#e8eef7;
+  --deep:#070e1a; --deep-2:#0e1b2f; --deep-line:#22385a; --deep-ink:#e7eef8; --deep-muted:#9fb2cc;
+  --hero-a:#0d1a30; --top:#111c2e; --mark-filter:brightness(1.7) saturate(1.1); --wm-filter:brightness(0) invert(.93); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--top)}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+button{font:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);font-stretch:112%;line-height:1.06;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(2.4rem,5.6vw,4.6rem);font-weight:800;font-stretch:125%}
+h2{font-size:clamp(1.8rem,3.4vw,2.7rem);font-weight:700}
+h3{font-size:1.18rem;font-weight:700}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;color:var(--cyan)}
+.lead{font-size:1.1rem;color:var(--muted);max-width:60ch}
+.sec{padding-block:clamp(56px,8vw,104px)}
+.sec-head{display:grid;gap:14px;margin-bottom:40px;max-width:760px}
+.grad{background:linear-gradient(90deg,var(--blue),var(--cyan) 55%,var(--mint));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* header + main tabs */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--top) 92%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;min-height:68px}
+.logo{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;cursor:pointer;color:var(--ink)}
+.logo img{width:40px;height:auto;filter:var(--mark-filter)}
+.logo .wordmark{width:118px;filter:var(--wm-filter)}
+@media (max-width:420px){.logo .wordmark{display:none}}
+.home-hero .mark img{filter:var(--mark-filter)}
+.wordmark{display:block;width:118px;height:auto;filter:var(--wm-filter)}
+.tabs{display:flex;gap:4px;margin-left:auto;background:var(--chip);padding:4px;border-radius:999px}
+.tab{border:0;background:transparent;color:var(--muted);padding:8px 16px;border-radius:999px;cursor:pointer;font-size:.92rem;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--tab-on);color:var(--tab-on-ink);box-shadow:0 1px 3px rgb(0 0 0 / .12)}
+.theme{flex:none;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:grid;place-items:center}
+.theme svg{width:18px;height:18px}
+.theme .sun{display:none}
+:root[data-theme="dark"] .theme .sun{display:block}
+:root[data-theme="dark"] .theme .moon{display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 .95rem var(--f-body);padding:12px 22px;border-radius:999px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .15s,background .15s,border-color .15s;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--btn);color:var(--btn-ink)}
+.btn-primary:hover{background:var(--btn-hover)}
+.btn-line{border-color:var(--line);background:var(--surface);color:var(--ink)}
+.btn-line:hover{border-color:var(--cyan)}
+.btn-text{background:none;border:0;color:var(--cyan);padding:0;font-weight:600;cursor:pointer}
+.btn-text:hover{text-decoration:underline}
+.top .btn{padding:9px 16px;font-size:.88rem}
+.top .mtabs{display:none}
+@media (max-width:980px){
+  .tabs{display:none}.theme{margin-left:auto}
+  .top .mtabs{display:flex;gap:6px;overflow-x:auto;padding-block:8px 10px;scrollbar-width:none}
+  .mtabs .tab{background:var(--chip);flex:none}
+}
+
+.view[hidden]{display:none!important}
+.view{animation:fadeIn .45s ease}
+@keyframes fadeIn{from{opacity:.4;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* HOME */
+.home-hero{padding-block:clamp(48px,7vw,96px) clamp(40px,5vw,64px);position:relative;overflow:hidden;background:linear-gradient(180deg,var(--hero-a),var(--bg))}
+.p-hero{background:linear-gradient(180deg,var(--hero-a),var(--bg) 70%)}
+.home-hero .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px;align-items:center}
+.home-hero .mark{justify-self:center;width:min(100%,380px);position:relative}
+.home-hero .mark img{width:100%;position:relative;z-index:1}
+.home-hero canvas{position:absolute;inset:-12%;width:124%;height:124%;z-index:0}
+.home-hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.home-hero .lead{margin-top:20px}
+.pill{display:inline-flex;align-items:center;gap:8px;font:500 .8rem var(--f-mono);letter-spacing:.06em;color:var(--ink);background:var(--chip);padding:6px 12px;border-radius:999px;margin-bottom:22px}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 4px color-mix(in srgb,var(--mint) 30%,transparent)}
+@media (max-width:860px){.home-hero .wrap{grid-template-columns:1fr}.home-hero .mark{width:220px;order:-1;justify-self:start}}
+
+.feature{background:var(--surface);border-block:1px solid var(--line)}
+.feature-card{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--bg)}
+.feature-card .ph{background:var(--studio)}
+.feature-card .ph img{width:100%;height:100%;object-fit:cover}
+.feature-card .tx{padding:clamp(24px,4vw,48px);display:grid;gap:16px;align-content:center}
+.feature-card .model{font-family:var(--f-mono);font-size:.82rem;color:var(--muted)}
+.feature-card ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.feature-card li{display:flex;gap:10px;color:var(--muted)}
+.feature-card li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--cyan);margin-top:.62em}
+.feature-card .row-b{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+@media (max-width:860px){.feature-card{grid-template-columns:1fr}}
+
+.pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.pillar{padding:26px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);display:grid;gap:10px;align-content:start}
+.pillar svg{width:34px;height:34px}
+.pillar p{color:var(--muted);font-size:.96rem}
+@media (max-width:860px){.pillars{grid-template-columns:1fr}}
+
+.band{background:var(--deep);color:var(--deep-ink)}
+.band .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;padding-block:44px}
+.band h2{font-size:clamp(1.5rem,2.6vw,2.1rem);color:var(--deep-ink)}
+.band p{color:var(--deep-muted)}
+.band .btn-primary{background:#2fd3f2;color:#06121f}
+.band .btn-primary:hover{background:#5be7c4}
+
+/* PRODUCT */
+.p-hero{padding-block:clamp(40px,6vw,80px) 0}
+.p-hero .p-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:44px;align-items:center}
+.p-hero .ph{border-radius:var(--r);overflow:hidden;background:var(--studio)}
+.p-hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.p-hero h1{margin-block:14px 18px;font-size:clamp(2.2rem,4.4vw,3.7rem);font-stretch:112%}
+.app-badge{display:inline-flex;align-items:center;gap:10px;margin-top:22px;font-size:.88rem;color:var(--muted)}
+.app-badge img{width:36px;height:36px}
+.specbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:48px;border-block:1px solid var(--line)}
+.specbar div{padding:20px 18px;border-left:1px solid var(--line)}
+.specbar div:first-child{border-left:0;padding-left:0}
+.specbar b{display:block;font-family:var(--f-display);font-stretch:112%;font-size:clamp(1.25rem,2.3vw,1.8rem);font-weight:700;font-variant-numeric:tabular-nums}
+.specbar span{font-size:.85rem;color:var(--muted)}
+@media (max-width:900px){.p-hero .p-grid{grid-template-columns:1fr}.specbar{grid-template-columns:repeat(2,minmax(0,1fr))}.specbar div:nth-child(3){border-left:0;padding-left:0}.specbar div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+.subtabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 69px);z-index:40;background:var(--bg);border-bottom:1px solid var(--line);margin-top:40px}
+.subtabs .wrap{display:flex;gap:26px;overflow-x:auto;scrollbar-width:none}
+.stab{border:0;background:none;color:var(--muted);padding:16px 0 14px;cursor:pointer;font-weight:500;border-bottom:2px solid transparent;white-space:nowrap}
+.stab:hover{color:var(--ink)}
+.stab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--cyan)}
+@media (max-width:980px){.subtabs{top:calc(env(safe-area-inset-top,0px) + 118px)}}
+.panel{padding-block:48px 80px}
+.panel[hidden]{display:none!important}
+
+.soft-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px}
+.shot{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.shot .img{background:var(--studio);border-bottom:1px solid var(--line)}
+.shot .img img{width:100%}
+.shot figcaption{padding:18px 20px 22px;display:grid;gap:6px}
+.shot figcaption p{color:var(--muted);font-size:.95rem}
+.s-wide{grid-column:span 8}.s-narrow{grid-column:span 4}.s-half{grid-column:span 6}
+.s-narrow .img{display:grid;place-items:center;padding:20px;flex:1}
+@media (max-width:900px){.s-wide,.s-narrow,.s-half{grid-column:1/-1}}
+.feat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:44px;border-top:1px solid var(--line)}
+.feat div{padding:24px 24px 24px 0;border-bottom:1px solid var(--line);display:grid;gap:8px;align-content:start}
+.feat div+div{padding-left:24px;border-left:1px solid var(--line)}
+.feat div:nth-child(3n+1){padding-left:0;border-left:0}
+.feat p{color:var(--muted);font-size:.95rem}
+@media (max-width:760px){.feat{grid-template-columns:1fr}.feat div,.feat div+div{padding-left:0;border-left:0}}
+
+.ov-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.ov{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:grid;gap:10px;align-content:start}
+.ov p{color:var(--muted);font-size:.96rem}
+.ov .k{font-family:var(--f-mono);font-size:.78rem;color:var(--cyan)}
+@media (max-width:860px){.ov-grid{grid-template-columns:1fr}}
+
+.ant-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.ant{display:grid;gap:12px;align-content:start}
+.ant .ph{background:var(--studio);border-radius:var(--r);overflow:hidden;aspect-ratio:3/4}
+.ant .ph img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.ant:hover .ph img{transform:scale(1.04)}
+.ant .meta{font-family:var(--f-mono);font-size:.76rem;color:var(--muted)}
+.ant p{color:var(--muted);font-size:.95rem}
+@media (max-width:760px){.ant-grid{grid-template-columns:1fr}.ant .ph{aspect-ratio:4/3}}
+
+.kit-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:44px;align-items:center}
+.kit-photo{border-radius:var(--r);overflow:hidden;background:var(--studio)}
+.kit-list{list-style:none;margin:22px 0 0;padding:0;display:grid}
+.kit-list li{display:flex;gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line)}
+.kit-list .q{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--cyan);min-width:2.4em}
+@media (max-width:900px){.kit-grid{grid-template-columns:1fr}}
+
+.exp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.exp-col{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:grid;gap:14px;align-content:start}
+.exp-col ol{margin:0;padding-left:1.3em;display:grid;gap:8px;color:var(--muted);font-size:.95rem}
+.exp-col ol li::marker{font-family:var(--f-mono);color:var(--cyan)}
+@media (max-width:860px){.exp{grid-template-columns:1fr}}
+
+.spec-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{text-align:left;padding:14px 20px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child th,tr:last-child td{border-bottom:0}
+th{font-weight:500;color:var(--muted);width:32%;font-size:.92rem}
+td .m{font-family:var(--f-mono);font-size:.88rem;font-variant-numeric:tabular-nums}
+.next{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-top:36px;padding-top:24px;border-top:1px solid var(--line)}
+
+/* HOW IT WORKS (scroll story) */
+.story{background:var(--deep);color:var(--deep-ink);padding-block:clamp(56px,7vw,96px) 0}
+.story h2{color:#fff}
+.story .lead{color:var(--deep-muted)}
+.story-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px;margin-top:10px}
+.steps{padding-bottom:28vh}
+.step{min-height:78vh;display:flex;flex-direction:column;justify-content:center;gap:14px;opacity:.32;transition:opacity .4s}
+.step.on{opacity:1}
+.step .n{font-family:var(--f-mono);font-size:.8rem;color:#5be7c4;letter-spacing:.1em}
+.step h3{font-size:clamp(1.5rem,2.6vw,2.1rem);color:#fff}
+.step p{color:var(--deep-muted);max-width:46ch}
+.step .tag{font-family:var(--f-mono);font-size:.78rem;color:#2fd3f2}
+.stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + 90px);height:min(74vh,640px);display:grid;grid-template-rows:minmax(0,1fr) auto;gap:14px;align-self:start}
+.screen{position:relative;border-radius:14px;background:#e6eaef;overflow:hidden;border:1px solid var(--deep-line);box-shadow:0 30px 80px -30px #000}
+.screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transform:scale(1.03);transition:opacity .6s ease,transform 1.2s ease}
+.screen img.on{opacity:1;transform:scale(1)}
+.rec{position:absolute;top:12px;left:12px;z-index:2;font:500 .72rem var(--f-mono);letter-spacing:.08em;background:#0b1628e0;color:#e7eef8;padding:6px 10px;border-radius:6px;display:flex;gap:8px;align-items:center}
+.rec i{width:8px;height:8px;border-radius:50%;background:#ff5a5f;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.25}}
+.scope{background:#050b15;border:1px solid #22385a;border-radius:14px;padding:12px 14px;display:grid;gap:8px}
+.scope-top{display:flex;justify-content:space-between;gap:10px;font:500 .74rem var(--f-mono);color:#9fb2cc;letter-spacing:.06em}
+.scope-top b{color:#5be7c4;font-weight:500}
+.scope canvas{width:100%;height:110px;display:block}
+.progress{height:3px;background:#16263f;border-radius:2px;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#2fd3f2,#5be7c4);transition:width .3s}
+.story-end{background:var(--deep);padding-block:0 80px}
+.story-end .wrap{display:flex;flex-wrap:wrap;gap:12px}
+.story-end .btn-line{background:transparent;color:#fff;border-color:var(--deep-line)}
+@media (max-width:900px){
+  .story-grid{grid-template-columns:1fr;gap:0}
+  .stage{top:calc(env(safe-area-inset-top,0px) + 118px);height:auto;grid-template-rows:auto auto;order:-1;z-index:1;background:var(--deep);padding-bottom:10px}
+  .screen{aspect-ratio:16/10}
+  .scope canvas{height:70px}
+  .steps{padding-bottom:12vh}
+  .step{min-height:58vh}
+}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:56px;align-items:start}
+.about-grid .prose{display:grid;gap:18px;color:var(--muted);font-size:1.05rem;max-width:62ch}
+.about-grid .prose strong{color:var(--ink)}
+.values{display:grid;gap:0;border-top:1px solid var(--line)}
+.values div{padding:20px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;gap:6px 16px}
+.values svg{grid-row:span 2;width:28px;height:28px;margin-top:2px}
+.values p{color:var(--muted);font-size:.95rem}
+@media (max-width:900px){.about-grid{grid-template-columns:1fr}}
+
+/* QUOTE */
+.quote{background:var(--deep);color:#fff;padding-block:clamp(56px,7vw,96px)}
+.quote h1{font-size:clamp(2.2rem,4.6vw,3.6rem);color:#fff}
+.quote .lead{color:var(--deep-muted);margin-top:18px}
+.q-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:56px;align-items:start}
+.q-steps{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:14px}
+.q-steps li{display:grid;grid-template-columns:32px 1fr;gap:12px;color:#c3d1e4}
+.q-steps b{color:#fff;font-weight:600}
+.q-steps span.k{width:28px;height:28px;border-radius:50%;border:1px solid #2fd3f2;color:#2fd3f2;font:500 .8rem var(--f-mono);display:grid;place-items:center}
+.q-contact{margin-top:30px;display:grid;gap:10px}
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.mail code{font-family:var(--f-mono);font-size:1rem;background:#ffffff14;padding:8px 12px;border-radius:8px;user-select:all;color:#fff}
+.mail button{background:transparent;border:1px solid #ffffff40;color:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.85rem}
+.q-contact small{color:#9fb2cc}
+form{background:#ffffff0a;border:1px solid #ffffff22;border-radius:16px;padding:28px;display:grid;gap:16px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{display:grid;gap:6px;font-size:.85rem;color:#c3d1e4}
+input,select,textarea{font:inherit;font-size:1rem;color:#fff;background:#08111f;border:1px solid #ffffff2e;border-radius:8px;padding:11px 12px;width:100%}
+input::placeholder,textarea::placeholder{color:#7d8fa8}
+textarea{min-height:96px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid #2fd3f2;outline-offset:1px;border-color:transparent}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg input{position:absolute;opacity:0;width:1px;height:1px}
+.seg label{display:inline-flex;cursor:pointer;padding:8px 14px;border-radius:999px;border:1px solid #ffffff33;color:#c3d1e4;font-size:.9rem}
+.seg input:checked+label{background:#2fd3f2;color:#06121f;border-color:#2fd3f2}
+.seg input:focus-visible+label{outline:2px solid #2fd3f2;outline-offset:2px}
+fieldset{border:0;margin:0;padding:0;display:grid;gap:8px}
+legend{font-size:.85rem;color:#c3d1e4;padding:0;margin-bottom:8px}
+.q-submit{background:#2fd3f2;color:#06121f}
+.q-submit:hover{background:#5be7c4}
+.f-note{font-size:.8rem;color:#9fb2cc}
+.f-status{font-size:.92rem;border-radius:8px;padding:12px 14px;display:grid;gap:8px}
+.f-status.ok{background:#1f8a4c33;border:1px solid #4cc17e66}
+.f-status.alt{background:#2fd3f222;border:1px solid #2fd3f266}
+.f-status pre{white-space:pre-wrap;font:400 .8rem var(--f-mono);margin:0;color:#dfe7f2}
+@media (max-width:900px){.q-grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+
+footer{background:var(--surface);border-top:1px solid var(--line);padding-block:40px;font-size:.9rem;color:var(--muted)}
+footer .wrap{display:grid;grid-template-columns:minmax(0,2fr) repeat(2,minmax(0,1fr));gap:28px}
+footer .wordmark{width:150px;margin-bottom:12px}
+footer h4{margin:0 0 10px;font:600 .78rem var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+footer nav{display:grid;gap:6px;justify-items:start}
+footer nav button{background:none;border:0;padding:0;color:var(--muted);cursor:pointer}
+footer nav button:hover{color:var(--ink)}
+.copy{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px;font-size:.82rem}
+@media (max-width:700px){footer .wrap{grid-template-columns:1fr}}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <button class="logo" data-go="home" aria-label="Aletheis Technologies, home">
+      <img src="images/logo-mark.png" width="480" height="438" alt="">
+      <img class="wordmark" src="images/wordmark.png" width="900" height="239" alt="">
+    </button>
+    <div class="tabs" role="tablist" aria-label="Site sections">
+      <button class="tab" role="tab" data-go="home">Home</button>
+      <button class="tab" role="tab" data-go="product">Product</button>
+      <button class="tab" role="tab" data-go="how">How it works</button>
+      <button class="tab" role="tab" data-go="about">About us</button>
+    </div>
+    <button class="theme" id="themeBtn" type="button" aria-label="Switch to night mode"><svg class="moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button class="btn btn-primary" data-go="quote">Get a quote</button>
+  </div>
+  <div class="wrap mtabs" role="tablist" aria-label="Site sections">
+    <button class="tab" role="tab" data-go="home">Home</button>
+    <button class="tab" role="tab" data-go="product">Product</button>
+    <button class="tab" role="tab" data-go="how">How it works</button>
+    <button class="tab" role="tab" data-go="about">About us</button>
+    <button class="tab" role="tab" data-go="quote">Quote</button>
+  </div>
+</header>
+
+<main>
+<!-- ============ HOME ============ -->
+<div class="view" id="v-home" data-view="home">
+  <section class="home-hero">
+    <div class="wrap">
+      <div>
+        <span class="pill"><i></i>Now available · AL-WCT-1002</span>
+        <h1>Making wireless <span class="grad">visible.</span></h1>
+        <p class="lead">Aletheis Technologies builds lab equipment for communication engineering. Our Wireless Communication Trainer lets students send a real radio signal and see everything that happens to it.</p>
+        <div class="cta">
+          <button class="btn btn-primary" data-go="product">Meet the trainer</button>
+          <button class="btn btn-line" data-go="how">Watch how it works</button>
+        </div>
+      </div>
+      <div class="mark">
+        <canvas id="rings" aria-hidden="true"></canvas>
+        <img src="images/logo-mark.png" width="480" height="438" alt="Aletheis logo mark: a letter A sending signal waves">
+      </div>
+    </div>
+  </section>
+
+  <section class="feature sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Featured product</p>
+        <h2>The Wireless Communication Trainer.</h2>
+      </div>
+      <div class="feature-card">
+        <div class="ph"><img src="images/hero-stations.jpg" width="1600" height="1200" alt="Two trainer stations with Yagi antennas beside two monitors running the trainer software"></div>
+        <div class="tx">
+          <p class="model">AL-WCT-1002 · PC-based · two stations</p>
+          <h3 style="font-size:1.6rem">A real radio link for the teaching lab.</h3>
+          <ul>
+            <li>Transmit audio, images, text and test waves over the air</li>
+            <li>AM, FM, SSB, FSK, QPSK, QAM and more on a 70 MHz – 6 GHz carrier</li>
+            <li>Measure BER, RX power and bandwidth on every reception</li>
+            <li>Comes with 3 antenna types and an 18-experiment lab manual</li>
+          </ul>
+          <div class="row-b">
+            <button class="btn btn-primary" data-go="product">View product</button>
+            <button class="btn btn-line" data-go="quote">Request a quote</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">What we care about</p>
+        <h2>Built by engineers who remember the textbook diagrams.</h2>
+        <p class="lead">Communication theory is taught with block diagrams and equations. We think students should also hold the antenna, change the modulation index, and see the bit errors appear.</p>
+      </div>
+      <div class="pillars">
+        <div class="pillar">
+          <svg viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M17 6v22M11 28h12" stroke="var(--cyan)" stroke-width="2.2" stroke-linecap="round"/><path d="M10 10a10 10 0 0 0 0 10M24 10a10 10 0 0 1 0 10" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <h3>Real hardware, real RF</h3>
+          <p>No simulator pretending to be a radio. Signals leave an antenna, cross the room and meet real noise and fading.</p>
+        </div>
+        <div class="pillar">
+          <svg viewBox="0 0 34 34" fill="none" aria-hidden="true"><rect x="5" y="7" width="24" height="17" rx="3" stroke="var(--blue)" stroke-width="2.2"/><path d="M9 19l4-5 4 3 4-6 4 5" stroke="var(--cyan)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 28h8" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <h3>Software we write ourselves</h3>
+          <p>The trainer software is designed and built in-house, so we can fix problems quickly and improve it with every release.</p>
+        </div>
+        <div class="pillar">
+          <svg viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M7 9h20v14H15l-6 5v-5H7z" stroke="var(--blue)" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 15h10M12 19h6" stroke="var(--cyan)" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <h3>Close to our customers</h3>
+          <p>You talk directly to the engineers who built the trainer, from the first quote to setting up your lab.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="band">
+    <div class="wrap">
+      <div><h2>Planning a communication lab?</h2><p>Tell us how many stations you need. We reply with pricing and delivery time.</p></div>
+      <button class="btn btn-primary" data-go="quote">Get a quote</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PRODUCT ============ -->
+<div class="view" id="v-product" data-view="product" hidden>
+  <section class="p-hero">
+    <div class="wrap p-grid">
+      <div>
+        <p class="eyebrow">Model AL-WCT-1002</p>
+        <h1>Wireless Communication Trainer</h1>
+        <p class="lead">A PC-based, two-station kit for teaching modulation, antennas and digital communication with real signals over the air.</p>
+        <div class="cta">
+          <button class="btn btn-primary" data-go="quote">Request a quote</button>
+          <button class="btn btn-line" data-go="how">See it in action</button>
+        </div>
+        <div class="app-badge"><img src="images/app-icon.svg" width="36" height="36" alt="">Includes the Wireless Communication Trainer software for Windows</div>
+      </div>
+      <div class="ph"><img src="images/kit-unboxed.jpg" width="1600" height="1200" alt="The complete AL-WCT-1002 kit laid out in front of its wooden case"></div>
+    </div>
+    <div class="wrap">
+      <div class="specbar">
+        <div><b>70 MHz – 6 GHz</b><span>Tunable RF carrier</span></div>
+        <div><b>12+</b><span>Analog &amp; digital modulations</span></div>
+        <div><b>18</b><span>Guided lab experiments</span></div>
+        <div><b>3</b><span>Antenna types included</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="subtabs">
+    <div class="wrap" role="tablist" aria-label="Product details">
+      <button class="stab" role="tab" data-panel="overview" aria-selected="true">Overview</button>
+      <button class="stab" role="tab" data-panel="software">Software</button>
+      <button class="stab" role="tab" data-panel="antennas">Antennas</button>
+      <button class="stab" role="tab" data-panel="box">In the box</button>
+      <button class="stab" role="tab" data-panel="labs">Experiments</button>
+      <button class="stab" role="tab" data-panel="specs">Specifications</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="panel" data-p="overview">
+      <div class="sec-head"><p class="eyebrow">Overview</p><h2>One kit covers the whole signal chain.</h2></div>
+      <div class="ov-grid">
+        <div class="ov"><span class="k">SEND</span><h3>Four kinds of signal</h3><p>Audio files, images, text messages, and sine, cosine or triangle test waves with adjustable frequency and amplitude.</p></div>
+        <div class="ov"><span class="k">MODULATE</span><h3>12+ schemes</h3><p>AM with index up to 2, DSB-SC, SSB, FM, PM, ASK, FSK, BPSK, QPSK, M-PSK, M-QAM and PCM, plotted on the real carrier.</p></div>
+        <div class="ov"><span class="k">MEASURE</span><h3>Numbers for the report</h3><p>BER, correlation, image PSNR, RX power, PAPR and 99% bandwidth, compared side by side across receptions.</p></div>
+        <div class="ov"><span class="k">ANTENNAS</span><h3>Dipole, bidirectional, Yagi</h3><p>All three clamp onto the same stand, so students compare radiation patterns in minutes.</p></div>
+        <div class="ov"><span class="k">CLASSROOM</span><h3>Made for lab sessions</h3><p>Two stations per kit. Each frame carries a station ID, so several groups can work in the same room.</p></div>
+        <div class="ov"><span class="k">SETUP</span><h3>One installer</h3><p>The Windows installer sets up the software and USB drivers. Each lab PC is activated with its own license file.</p></div>
+      </div>
+      <div class="next"><span style="color:var(--muted)">Next: the software students use</span><button class="btn btn-line" data-panel-go="software">Software →</button></div>
+    </section>
+
+    <section class="panel" data-p="software" hidden>
+      <div class="sec-head"><p class="eyebrow">Software</p><h2>Every stage of the link, on one screen.</h2><p class="lead">Baseband, modulated signal, packet structure and results update as students change settings. What they see is what the radio sent and received.</p></div>
+      <div class="soft-grid">
+        <figure class="shot s-wide"><div class="img"><img src="images/app-transmit-image.png" width="1912" height="1092" alt="Trainer transmitting an image with 16-QAM at 915 MHz" loading="lazy"></div><figcaption><h3>Transmit anything</h3><p>Send a photo with 16-QAM at 3 MS/s and see the bits, the spectrum and the packet layout: preamble, sync, ID, payload, CRC.</p></figcaption></figure>
+        <figure class="shot s-narrow"><div class="img"><img src="images/app-decoded.png" width="398" height="371" alt="Received signal panel reporting a payload CRC mismatch" loading="lazy"></div><figcaption><h3>Honest decoding</h3><p>Sender ID, scheme, carrier, frequency offset and CRC checks for every frame.</p></figcaption></figure>
+        <figure class="shot s-half"><div class="img"><img src="images/app-compare.png" width="1426" height="1078" alt="Compare tab with three AM receptions" loading="lazy"></div><figcaption><h3>Compare tab</h3><p>Overlay receptions at AM μ = 0.6, 1.0 and 2.0 and see over-modulation in the numbers.</p></figcaption></figure>
+        <figure class="shot s-half"><div class="img"><img src="images/app-results.png" width="1363" height="824" alt="Results table comparing FM, QPSK and DSB-SC receptions" loading="lazy"></div><figcaption><h3>Results students can cite</h3><p>Correlation, BER, PSNR, RX power, PAPR and 99% bandwidth for every scheme.</p></figcaption></figure>
+      </div>
+      <div class="feat">
+        <div><h3>Theory next to practice</h3><p>FM shows β and Carson bandwidth as you type, with a Bessel warning when sidebands outgrow the carrier.</p></div>
+        <div><h3>Built-in help</h3><p>Packet structure and every result column explained inside the app.</p></div>
+        <div><h3>Station settings</h3><p>Find devices, change a station's network address and update firmware from Settings.</p></div>
+      </div>
+      <div class="next"><span style="color:var(--muted)">Next: the three antennas</span><button class="btn btn-line" data-panel-go="antennas">Antennas →</button></div>
+    </section>
+
+    <section class="panel" data-p="antennas" hidden>
+      <div class="sec-head"><p class="eyebrow">Antennas</p><h2>Three antennas. One stand. Swap in seconds.</h2></div>
+      <div class="ant-grid">
+        <div class="ant"><div class="ph"><img src="images/antenna-dipole.jpg" width="775" height="1542" alt="Vertical dipole antenna on the trainer stand" loading="lazy"></div><span class="meta">PATTERN · OMNIDIRECTIONAL</span><h3>Dipole</h3><p>The reference antenna. Rotate it to show polarization loss between stations.</p></div>
+        <div class="ant"><div class="ph"><img src="images/antenna-bidir.jpg" width="796" height="1572" alt="Horizontal bidirectional antenna on the trainer stand" loading="lazy"></div><span class="meta">PATTERN · FIGURE-EIGHT</span><h3>Bidirectional</h3><p>Two lobes, two nulls. Turn the stand and watch RX power fall at the null.</p></div>
+        <div class="ant"><div class="ph"><img src="images/antenna-yagi.jpg" width="775" height="1568" alt="Yagi antenna on the trainer stand" loading="lazy"></div><span class="meta">PATTERN · DIRECTIONAL, HIGH GAIN</span><h3>Yagi</h3><p>Directors and reflector on one boom. Measure gain and front-to-back ratio against the dipole.</p></div>
+      </div>
+      <div class="next"><span style="color:var(--muted)">Next: everything in the case</span><button class="btn btn-line" data-panel-go="box">In the box →</button></div>
+    </section>
+
+    <section class="panel" data-p="box" hidden>
+      <div class="kit-grid">
+        <div class="kit-photo"><img src="images/kit-unboxed.jpg" width="1600" height="1200" alt="Complete kit contents laid out in front of the wooden case" loading="lazy"></div>
+        <div>
+          <p class="eyebrow">In the box</p>
+          <h2 style="margin-top:14px">A complete two-station lab, in one case.</h2>
+          <ul class="kit-list">
+            <li><span class="q">×2</span><span>RF transceiver units</span></li>
+            <li><span class="q">×2</span><span>Adjustable antenna stands</span></li>
+            <li><span class="q">×2</span><span>Each of dipole, bidirectional and Yagi antennas</span></li>
+            <li><span class="q">—</span><span>SMA RF cables, including a direct-link cable</span></li>
+            <li><span class="q">×2</span><span>Power adapters and USB cables</span></li>
+            <li><span class="q">×1</span><span>18-experiment lab manual and quick-start guide</span></li>
+            <li><span class="q">×1</span><span>Software installer on USB drive</span></li>
+            <li><span class="q">×1</span><span>Wooden case with foam inserts</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="next"><span style="color:var(--muted)">Next: what students will do</span><button class="btn btn-line" data-panel-go="labs">Experiments →</button></div>
+    </section>
+
+    <section class="panel" data-p="labs" hidden>
+      <div class="sec-head"><p class="eyebrow">Lab manual · 18 experiments</p><h2>A semester of experiments, ready on day one.</h2><p class="lead">Each experiment has objectives, theory, a step-by-step procedure, result tables and viva questions. A few examples:</p></div>
+      <div class="exp">
+        <div class="exp-col"><p class="eyebrow">Analog modulation</p><ol><li>AM: modulation index and over-modulation</li><li>DSB-SC and SSB bandwidth comparison</li><li>FM: Bessel sidebands and Carson's rule</li></ol></div>
+        <div class="exp-col"><p class="eyebrow">Digital communication</p><ol><li>ASK, FSK and BPSK over the air</li><li>QPSK and 16-QAM: bit errors against distance</li><li>Packets, CRC and error detection</li></ol></div>
+        <div class="exp-col"><p class="eyebrow">Antennas &amp; channel</p><ol><li>Radiation patterns of three antennas</li><li>Free-space path loss and received power</li><li>Polarization mismatch and fading</li></ol></div>
+      </div>
+      <div class="next"><span style="color:var(--muted)">Next: the full specifications</span><button class="btn btn-line" data-panel-go="specs">Specifications →</button></div>
+    </section>
+
+    <section class="panel" data-p="specs" hidden>
+      <div class="sec-head"><p class="eyebrow">Specifications</p><h2>The numbers.</h2></div>
+      <div class="spec-wrap">
+        <table>
+          <tr><th>Model</th><td>AL-WCT-1002, two-station kit</td></tr>
+          <tr><th>RF frequency range</th><td><span class="m">70 MHz – 6 GHz</span></td></tr>
+          <tr><th>Sample rate</th><td><span class="m">521 kS/s – 61.44 MS/s</span></td></tr>
+          <tr><th>RF bandwidth</th><td><span class="m">200 kHz – 56 MHz</span></td></tr>
+          <tr><th>Receiver gain</th><td><span class="m">0 – 74.5 dB</span></td></tr>
+          <tr><th>Modulation schemes</th><td>AM (μ up to 2), DSB-SC, SSB, FM, PM, ASK, FSK, BPSK, QPSK, M-PSK, M-QAM, PCM</td></tr>
+          <tr><th>Signal types</th><td>Audio (WAV), image, text, sine / cosine / triangle waves</td></tr>
+          <tr><th>Measurements</th><td>BER, correlation, image PSNR, RX power (dBFS), PAPR, 99% bandwidth, frequency offset, CRC</td></tr>
+          <tr><th>PC connection</th><td>USB</td></tr>
+          <tr><th>Software</th><td>Windows 10 / 11 (64-bit) installer, Linux build available; licensed per PC</td></tr>
+        </table>
+      </div>
+      <div class="next"><span style="color:var(--muted)">Ready to equip your lab?</span><button class="btn btn-primary" data-go="quote">Request a quote</button></div>
+    </section>
+  </div>
+</div>
+
+<!-- ============ HOW IT WORKS ============ -->
+<div class="view" id="v-how" data-view="how" hidden>
+  <section class="story">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow" style="color:#5be7c4">How it works · scroll to play</p>
+        <h2>From a message to a measurement, in one lab period.</h2>
+        <p class="lead">Follow one transmission from the first click to the final error count.</p>
+      </div>
+      <div class="story-grid">
+        <div class="steps">
+          <div class="step" data-i="0"><span class="n">STEP 1 — SIGNAL</span><h3>Pick what to send.</h3><p>Choose audio, an image, text or a test wave. Set shape, frequency and amplitude, and preview the message before anything leaves the PC.</p><span class="tag">Sine · 1000 Hz · A 0.9 · 1 s</span></div>
+          <div class="step" data-i="1"><span class="n">STEP 2 — MODULATE</span><h3>Choose a scheme and see the spectrum.</h3><p>Change the modulation index or deviation and watch the sidebands move around the real carrier frequency.</p><span class="tag">FM · Δf 2.5 kHz · β = 2.25</span></div>
+          <div class="step" data-i="2"><span class="n">STEP 3 — OVER THE AIR</span><h3>Transmit through a real channel.</h3><p>The signal leaves the antenna at 915 MHz and crosses the room. Swap antennas, change the distance, and see fading and noise for yourself.</p><span class="tag">TX 915 MHz · 3 MS/s</span></div>
+          <div class="step" data-i="3"><span class="n">STEP 4 — RECEIVE</span><h3>Capture and decode automatically.</h3><p>The second station finds the packet, checks header and payload CRC, and rebuilds the image, sound or text. Bit errors are shown, never hidden.</p><span class="tag">Header CRC-16 OK · Payload CRC-32 checked</span></div>
+          <div class="step" data-i="4"><span class="n">STEP 5 — MEASURE</span><h3>Compare results side by side.</h3><p>Every reception against the original: correlation, BER, PSNR, RX power, PAPR and bandwidth in one table, ready for the lab report.</p><span class="tag">QPSK · BER 0.00 % · correlation 0.9999</span></div>
+        </div>
+        <div class="stage" aria-hidden="true">
+          <div class="screen">
+            <div class="rec"><i></i><span id="recLabel">LIVE · SIGNAL</span></div>
+            <img class="on" src="images/app-transmit-wave.png" alt="">
+            <img src="images/app-spectrum.png" alt="">
+            <img src="images/hero-stations.jpg" alt="">
+            <img src="images/app-decoded.png" alt="">
+            <img src="images/app-results.png" alt="">
+          </div>
+          <div class="scope">
+            <div class="scope-top"><span id="scopeName">BASEBAND m(t)</span><b id="scopeVal">1.000 kHz</b></div>
+            <canvas id="scope"></canvas>
+            <div class="progress"><span id="prog"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="story-end"><div class="wrap"><button class="btn btn-primary q-submit" data-go="quote">Get a quote</button><button class="btn btn-line" data-go="product">Product details</button></div></div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<div class="view" id="v-about" data-view="about" hidden>
+  <section class="sec">
+    <div class="wrap">
+      <div class="about-grid">
+        <div>
+          <p class="eyebrow">About us</p>
+          <h1 style="margin-block:14px 26px;font-size:clamp(2.2rem,4.6vw,3.6rem)">We make radio something students can see.</h1>
+          <div class="prose">
+            <p><strong>Aletheis Technologies</strong> builds teaching equipment for communication engineering. The name comes from <em>aletheia</em>, the Greek word for truth or disclosure: showing what is really there.</p>
+            <p>That is the idea behind the Wireless Communication Trainer. In most labs, the radio is a black box and the results arrive as a single number. The Wireless Communication Trainer opens the box: every stage from message to modulation to the received bits is on screen, measured, and open to question.</p>
+            <p>Every kit we ship is tested before it leaves us, and every request from a lab reaches the engineers who designed it.</p>
+          </div>
+        </div>
+        <div class="values">
+          <div><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="14" cy="14" r="5" stroke="var(--cyan)" stroke-width="2"/><path d="M6 8a11 11 0 0 0 0 12M22 8a11 11 0 0 1 0 12" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"/></svg><h3>Show, don't hide</h3><p>Errors, noise and bad CRCs are part of the lesson, so the software reports them plainly.</p></div>
+          <div><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M5 20l6-6 4 4 8-9" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 9h6v6" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Keep improving</h3><p>The software gets regular updates with fixes and new features. Customers get them too.</p></div>
+          <div><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="4" stroke="var(--blue)" stroke-width="2"/><circle cx="19" cy="12" r="3" stroke="var(--cyan)" stroke-width="2"/><path d="M3 23c1-4 4-6 7-6s6 2 7 6M16 23c.5-3 2-4.5 4-4.5s3.5 1.5 4 4.5" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"/></svg><h3>Listen to labs</h3><p>Feedback from teachers and students shapes every software update.</p></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <div class="band">
+    <div class="wrap">
+      <div><h2>Want to see the trainer in your lab?</h2><p>Request a quote and we'll get back to you by email.</p></div>
+      <button class="btn btn-primary" data-go="quote">Get a quote</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ QUOTE ============ -->
+<div class="view" id="v-quote" data-view="quote" hidden>
+  <section class="quote">
+    <div class="wrap q-grid">
+      <div>
+        <p class="eyebrow" style="color:#5be7c4">Get a quote</p>
+        <h1 style="margin-top:14px">Equip your lab.</h1>
+        <p class="lead">Leave your email and tell us roughly what you need. We reply with pricing, delivery time and installation options.</p>
+        <ol class="q-steps">
+          <li><span class="k">1</span><span><b>You send the request.</b> Name, email and how many kits.</span></li>
+          <li><span class="k">2</span><span><b>We reply by email</b> with a quotation for your institution.</span></li>
+          <li><span class="k">3</span><span><b>We deliver and set up</b> the stations and software in your lab.</span></li>
+        </ol>
+        <div class="q-contact">
+          <small>Or write to us directly</small>
+          <div class="mail"><code id="mailAddr">sales@aletheis.example</code><button type="button" id="copyMail">Copy</button></div>
+        </div>
+      </div>
+      <form id="quoteForm" novalidate>
+        <div class="row">
+          <label for="q-name">Your name<input id="q-name" name="name" autocomplete="name" required placeholder="Your full name"></label>
+          <label for="q-email">Work email<input id="q-email" name="email" type="email" autocomplete="email" required placeholder="you@university.edu"></label>
+        </div>
+        <label for="q-org">Institution or company<input id="q-org" name="org" autocomplete="organization" placeholder="Department of EEE, …"></label>
+        <fieldset>
+          <legend>Number of kits (2 stations each)</legend>
+          <div class="seg">
+            <input type="radio" name="qty" id="qty1" value="1 kit" checked><label for="qty1">1</label>
+            <input type="radio" name="qty" id="qty2" value="2–5 kits"><label for="qty2">2–5</label>
+            <input type="radio" name="qty" id="qty3" value="6–10 kits"><label for="qty3">6–10</label>
+            <input type="radio" name="qty" id="qty4" value="More than 10 kits"><label for="qty4">10+</label>
+          </div>
+        </fieldset>
+        <label for="q-msg">Anything else?<textarea id="q-msg" name="msg" placeholder="Delivery city, required date, training needs…"></textarea></label>
+        <button class="btn q-submit" type="submit" id="q-submit">Request a quote</button>
+        <p class="f-note">This opens your email app with the request filled in. We use your email only to reply.</p>
+        <div id="fStatus" class="f-status" hidden></div>
+      </form>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><img class="wordmark" src="images/wordmark.png" width="900" height="239" alt="Aletheis Technologies"><p>Lab equipment for communication engineering, including the AL-WCT-1002 Wireless Communication Trainer.</p></div>
+    <div><h4>Company</h4><nav><button data-go="home">Home</button><button data-go="about">About us</button><button data-go="quote">Get a quote</button></nav></div>
+    <div><h4>Product</h4><nav><button data-go="product">Wireless Communication Trainer</button><button data-go="how">How it works</button><button data-go="product" data-panel-go="specs">Specifications</button></nav></div>
+    <p class="copy">© 2026 Aletheis Technologies · sales@aletheis.example</p>
+  </div>
+</footer>
+
+<script>
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const VIEWS = ['home','product','how','about','quote'];
+let current = 'home';
+
+/* ---- main tabs ---- */
+function go(name, push){
+  if (!VIEWS.includes(name)) name = 'home';
+  current = name;
+  document.querySelectorAll('.view').forEach(v => v.hidden = v.dataset.view !== name);
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.go === name)));
+  if (push !== false) { try { history.replaceState(null, '', name === 'home' ? location.pathname + location.search : '#' + name); } catch(_) {} }
+  window.scrollTo(0, 0);
+  if (name === 'how') requestAnimationFrame(() => story.update());
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-go],[data-panel-go]'); if (!b) return;
+  if (b.dataset.go) go(b.dataset.go);
+  if (b.dataset.panelGo) panel(b.dataset.panelGo, !b.dataset.go);
+});
+addEventListener('hashchange', () => go(location.hash.slice(1), false));
+
+/* ---- product sub-tabs ---- */
+function panel(name, scroll){
+  document.querySelectorAll('.stab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.panel === name)));
+  document.querySelectorAll('.panel').forEach(p => p.hidden = p.dataset.p !== name);
+  if (scroll){ const st = document.querySelector('.subtabs'); const y = st.getBoundingClientRect().top + scrollY - 70; if (scrollY > y || current === 'product') window.scrollTo({top: Math.max(0, y), behavior: reduce ? 'auto' : 'smooth'}); }
+}
+document.querySelectorAll('.stab').forEach(t => t.addEventListener('click', () => panel(t.dataset.panel, true)));
+
+/* ---- canvas helpers ---- */
+function fit(c){ const r = c.getBoundingClientRect(), d = devicePixelRatio || 1; c.width = Math.max(1, r.width*d); c.height = Math.max(1, r.height*d); return d; }
+const noise = () => Math.random()+Math.random()+Math.random()-1.5;
+
+/* ---- home: rings radiating from the logo's dot ---- */
+(() => {
+  const c = document.getElementById('rings'), g = c.getContext('2d'); let d = fit(c);
+  addEventListener('resize', () => d = fit(c));
+  function draw(t){
+    if (current === 'home'){
+      const w = c.width, h = c.height; g.clearRect(0,0,w,h);
+      const cx = w*0.56, cy = h*0.40, max = Math.min(w,h)*0.55;
+      for (let k = 0; k < 4; k++){
+        const p = ((t*0.00022) + k/4) % 1, r = max*p;
+        g.beginPath(); g.arc(cx, cy, r, -Math.PI*0.42, Math.PI*0.32);
+        g.strokeStyle = `rgba(47,211,242,${(1-p)*0.55})`; g.lineWidth = 2.2*d; g.stroke();
+      }
+    }
+    if (!reduce) requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* ---- how it works: scroll story ---- */
+const story = (() => {
+  const steps = [...document.querySelectorAll('.step')], imgs = [...document.querySelectorAll('.screen img')];
+  const labels = ['LIVE · SIGNAL','LIVE · MODULATOR','LIVE · TX 915 MHz','LIVE · RECEIVER','LIVE · RESULTS'];
+  const scopes = [['BASEBAND m(t)','1.000 kHz'],['FM s(t) · β 2.25','Δf 2.5 kHz'],['CHANNEL · RX r(t)','SNR ≈ 18 dB'],['DEMODULATED m̂(t)','CRC checked'],['RECEIVED BITS','BER 0.00 %']];
+  const recL = document.getElementById('recLabel'), sN = document.getElementById('scopeName'), sV = document.getElementById('scopeVal'), prog = document.getElementById('prog');
+  let active = -1;
+  function set(i){
+    if (i === active) return; active = i;
+    steps.forEach((s,k) => s.classList.toggle('on', k === i));
+    imgs.forEach((im,k) => im.classList.toggle('on', k === i));
+    recL.textContent = labels[i]; sN.textContent = scopes[i][0]; sV.textContent = scopes[i][1];
+    prog.style.width = ((i+1)/steps.length*100) + '%';
+  }
+  function update(){
+    if (current !== 'how') return;
+    const mid = innerHeight*0.6; let best = 0, bd = Infinity;
+    steps.forEach((s,k) => { const r = s.getBoundingClientRect(), dd = Math.abs((r.top+r.bottom)/2 - mid); if (dd < bd){ bd = dd; best = k; } });
+    set(best);
+  }
+  set(0);
+  addEventListener('scroll', update, {passive:true});
+
+  const c = document.getElementById('scope'), g = c.getContext('2d'); let d = 1;
+  addEventListener('resize', () => d = fit(c));
+  function grid(w,h){ g.strokeStyle = '#16263f'; g.lineWidth = 1; for (let i=1;i<10;i++){ g.beginPath(); g.moveTo(w*i/10,0); g.lineTo(w*i/10,h); g.stroke(); } for (let i=1;i<4;i++){ g.beginPath(); g.moveTo(0,h*i/4); g.lineTo(w,h*i/4); g.stroke(); } }
+  function trace(fn, color, w, h){ g.strokeStyle = color; g.lineWidth = 1.6*d; g.beginPath(); for (let x=0; x<=w; x+=1.5*d){ const y = h/2 - fn(x/w)*h*0.42; x ? g.lineTo(x,y) : g.moveTo(x,y); } g.stroke(); }
+  function draw(t){
+    if (current === 'how'){
+      if (c.width < 2) d = fit(c);
+      const w = c.width, h = c.height, s = t*0.001; g.clearRect(0,0,w,h); grid(w,h);
+      const m = u => Math.sin(2*Math.PI*u*4 - s*3);
+      const fm = u => Math.cos(2*Math.PI*u*28 + 2.25*Math.sin(2*Math.PI*u*4 - s*3));
+      if (active === 0) trace(m, '#2fd3f2', w, h);
+      else if (active === 1){ trace(u => 0.95*fm(u), '#5b9cff', w, h); trace(u => 0.3*m(u), 'rgba(91,231,196,.7)', w, h); }
+      else if (active === 2) trace(u => 0.8*(0.75+0.25*Math.sin(u*3 - s))*fm(u) + 0.12*noise(), '#5b9cff', w, h);
+      else if (active === 3){ trace(u => 0.9*m(u), 'rgba(47,211,242,.35)', w, h); trace(u => 0.9*m(u) + 0.04*noise(), '#5be7c4', w, h); }
+      else { const n = 64, bw = w/n, f = Math.floor(s*2); g.fillStyle = '#5be7c4'; for (let i=0;i<n;i++){ const v = Math.abs(Math.sin((i+f)*12.9898)*43758.5453 % 1) > .5; g.fillRect(i*bw+1, v ? h*0.18 : h*0.57, bw-2, h*0.25); } }
+    }
+    if (!reduce) requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+  if (reduce) addEventListener('scroll', () => requestAnimationFrame(draw), {passive:true});
+  return {update: () => { d = fit(c); update(); if (reduce) requestAnimationFrame(draw); }};
+})();
+
+/* ---- copy email ---- */
+document.getElementById('copyMail').addEventListener('click', e => {
+  const b = e.currentTarget, el = document.getElementById('mailAddr');
+  const sel = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Selected'; };
+  try { navigator.clipboard.writeText(el.textContent).then(() => { b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy', 1600); }, sel); } catch(_) { sel(); }
+});
+
+/* ---- quote form: opens the visitor's email app with the request filled in ---- */
+(() => {
+  const TO = 'sales@aletheis.example';
+  const f = document.getElementById('quoteForm'), st = document.getElementById('fStatus');
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const show = (cls, html) => { st.className = 'f-status ' + cls; st.innerHTML = html; st.hidden = false; };
+  f.addEventListener('submit', ev => {
+    ev.preventDefault();
+    const v = Object.fromEntries(new FormData(f).entries());
+    if (!v.name.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email.trim())){ show('alt', 'Enter your name and a valid email address so we can send the quote.'); return; }
+    const text = `Name: ${v.name.trim()}\nEmail: ${v.email.trim()}\nInstitution: ${(v.org||'').trim()}\nKits: ${v.qty}\n\n${(v.msg||'').trim()}`;
+    const href = 'mailto:' + TO + '?subject=' + encodeURIComponent('Quote request: AL-WCT-1002') + '&body=' + encodeURIComponent(text);
+    location.href = href;
+    show('alt', '<b>Your email app should open with the request ready to send.</b> If it did not, email it to <b>' + TO + '</b>:<pre>' + esc(text) + '</pre><button type="button" class="btn btn-line" id="copyQ" style="justify-self:start;padding:8px 14px">Copy request</button>');
+    document.getElementById('copyQ').addEventListener('click', e => { const b = e.currentTarget; try { navigator.clipboard.writeText(text).then(() => b.textContent = 'Copied', () => {}); } catch(_) {} });
+  });
+})();
+
+/* ---- light / night mode (light is the default) ---- */
+(() => {
+  const root = document.documentElement, b = document.getElementById('themeBtn');
+  const apply = t => { if (t === 'dark') root.setAttribute('data-theme','dark'); else root.removeAttribute('data-theme'); b.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to night mode'); };
+  let saved = null; try { saved = localStorage.getItem('aletheis-theme'); } catch(_) {}
+  if (saved === 'dark') apply('dark');
+  b.addEventListener('click', () => { const t = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; apply(t); try { localStorage.setItem('aletheis-theme', t); } catch(_) {} });
+})();
+
+/* ---- start ---- */
+go(location.hash.slice(1) || 'home', false);
+</script>
+</body>
+</html>
